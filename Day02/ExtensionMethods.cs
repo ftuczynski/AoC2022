@@ -13,11 +13,25 @@ public static class ExtensionMethods
         Scissors = 3,
     }
 
+    public enum Outcome
+    {
+        Lose = 0,
+        Draw = 3,
+        Win = 6
+    }
+
     public static Hand MapHand(this char handCode) => handCode switch
     {
         'A' or 'X' => Hand.Rock,
         'B' or 'Y' => Hand.Paper,
         'C' or 'Z' => Hand.Scissors
+    };
+
+    public static Outcome MapOutcome(this char handCode) => handCode switch
+    {
+        'X' => Outcome.Lose,
+        'Y' => Outcome.Draw,
+        'Z' => Outcome.Win
     };
 
     public static int ScoreRound(Hand oponentHand, Hand myHand)
@@ -47,6 +61,33 @@ public static class ExtensionMethods
                 };
             default: return 0;
         }
+    }
+
+    public static Hand MapHandByOutcome(this Hand oponentHand, Outcome outcome)
+    {
+        switch (outcome)
+        {
+            case Outcome.Lose:
+                return oponentHand switch
+                {
+                    Hand.Rock => Hand.Scissors,
+                    Hand.Paper => Hand.Rock,
+                    Hand.Scissors => Hand.Paper
+                };
+            case Outcome.Win:
+                return oponentHand switch
+                {
+                    Hand.Rock => Hand.Paper,
+                    Hand.Paper => Hand.Scissors,
+                    Hand.Scissors => Hand.Rock
+                };
+            default: return oponentHand; //Draw
+        }
+    }
+
+    public static int ScoreRoundByOutcome(Hand oponentHand, Outcome outcome)
+    {
+        return ((int)oponentHand.MapHandByOutcome(outcome)) + ((int)outcome);
     }
 }
 

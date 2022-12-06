@@ -11,7 +11,7 @@ class Program
         Console.WriteLine("Part 1: " + SolvePartOne(input));
 
         //PART 2
-        Console.WriteLine("Part 2: ");
+        Console.WriteLine("Part 2: " + SolvePartTwo(input));
     }
 
     static int SolvePartOne(char[][] input)
@@ -20,6 +20,16 @@ class Program
         foreach (var round in input)
         {
             score += ExtensionMethods.ScoreRound(round[0].MapHand(), round[1].MapHand());
+        }
+        return score;
+    }
+
+    static int SolvePartTwo(char[][] input)
+    {
+        int score = 0;
+        foreach (var round in input)
+        {
+            score += ExtensionMethods.ScoreRoundByOutcome(round[0].MapHand(), round[1].MapOutcome());
         }
         return score;
     }
